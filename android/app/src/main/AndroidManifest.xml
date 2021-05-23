@@ -2,7 +2,7 @@
     package="org.anagkazobibleministrytrainingcentre.scan_screen">
    <application
         android:label="scan_screen"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

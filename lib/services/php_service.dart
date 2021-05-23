@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart' as http;
 import 'package:scan_screen/models/scan_detail.dart';
 
@@ -19,19 +20,22 @@ Future<ScanDetail> fetchScans() async {
 }
 
 Future<ScanDetail?> saveScan(myObject) async {
-  final String apiUrl = "http://127.0.0.1:8000/api/attendance";
+  final String apiUrl = "https://abs-att-back.000webhostapp.com/api/create.php";
   final String part = "attendance";
-  try {
-    final response = await http.post(Uri.parse(apiUrl), headers: {"Content-Type": "application/json"}, body: jsonEncode(myObject));
-    if (response.statusCode == 201) {
-      final String responseString = response.body;
 
-      print(responseString);
-      // return userModelFromJson(responseString);
-    } else {
-      return null;
-    }
-  } catch (e) {
-    // return e;
+  EasyLoading.show(status: 'loading...');
+
+    final response = await http.post(Uri.parse(apiUrl), headers: {"Content-Type": "application/json"}, body: jsonEncode(myObject));
+    var res = json.decode(response.body);
+    print(res);
+  if (res == "empty") {
+      EasyLoading.showError('NO SCAN, Try again');
   }
+  //
+  if (res == "success") {
+      EasyLoading.showSuccess('Attendance submitted!');
+    }
+  else if(res == "error"){
+      EasyLoading.showError('Failed with Error, try again');
+    }
 }
